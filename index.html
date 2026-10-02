@@ -142,10 +142,57 @@
   footer .name{font-family:var(--serif); font-weight:600;}
   footer .links{display:flex; gap:18px; font-size:0.9rem; color:var(--text-dim);}
   footer .links a:hover{color:var(--accent);}
+
+  /* USP */
+  .usp-section{background:var(--bg-alt); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .usp-quote{margin-top:18px; max-width:30ch; font-family:var(--serif); font-weight:500; font-size:clamp(1.35rem,3.4vw,2.1rem); line-height:1.35; padding-left:26px; border-left:3px solid var(--accent); position:relative;}
+  .usp-quote::after{content:""; display:block; width:90px; height:2px; margin-top:22px; background:linear-gradient(90deg,var(--accent),var(--accent-2)); background-size:200% 100%; animation:shimmer 3.5s linear infinite;}
+  @keyframes shimmer{ from{background-position:0 0;} to{background-position:-200% 0;} }
+
+  /* SCROLL PROGRESS */
+  #progress{position:fixed; top:0; left:0; right:0; height:2px; z-index:30; background:linear-gradient(90deg,var(--accent),var(--accent-2)); transform:scaleX(0); transform-origin:left; pointer-events:none;}
+
+  /* HERO ENTRANCE */
+  .hero-text > *{opacity:0; animation:riseIn .9s cubic-bezier(.2,.7,.2,1) forwards;}
+  .hero-text > :nth-child(1){animation-delay:.10s;}
+  .hero-text > :nth-child(2){animation-delay:.25s;}
+  .hero-text > :nth-child(3){animation-delay:.40s;}
+  .hero-text > :nth-child(4){animation-delay:.55s;}
+  .avatar{opacity:0; animation:avatarIn 1s .2s cubic-bezier(.2,.7,.2,1) forwards, ringGlow 5s 1.4s ease-in-out infinite;}
+  @keyframes riseIn{ from{opacity:0; transform:translateY(22px);} to{opacity:1; transform:none;} }
+  @keyframes avatarIn{ from{opacity:0; transform:scale(.88);} to{opacity:1; transform:none;} }
+  @keyframes ringGlow{ 0%,100%{box-shadow:0 0 0 0 rgba(94,234,212,0);} 50%{box-shadow:0 0 38px 2px rgba(94,234,212,.28);} }
+  .hero::before{content:""; position:absolute; width:520px; height:520px; right:-120px; top:-160px; border-radius:50%; background:radial-gradient(circle,rgba(94,234,212,.14),transparent 65%); animation:drift 9s ease-in-out infinite; pointer-events:none;}
+  @keyframes drift{ 0%,100%{transform:translate(0,0);} 50%{transform:translate(-30px,24px);} }
+
+  /* SCROLL REVEAL */
+  .js .reveal{opacity:0; transform:translateY(26px); transition:opacity .75s ease, transform .75s cubic-bezier(.2,.7,.2,1);}
+  .js .reveal.in{opacity:1; transform:none;}
+
+  /* HOVER POLISH */
+  .project{transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;}
+  .project.clickable:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,.28);}
+  .tag{transition:color .2s ease, border-color .2s ease;}
+  .tag:hover{color:var(--accent); border-color:var(--accent);}
+  .skills-col li{transition:transform .25s ease, border-left-color .25s ease;}
+  .skills-col li:hover{transform:translateX(5px);}
+  .course-list li, .cert-list li{transition:color .25s ease, border-color .25s ease;}
+  .course-list li:hover{color:var(--text); border-left-color:var(--accent);}
+  .cta-hint{transition:letter-spacing .3s ease;}
+  .project.clickable:hover .cta-hint{letter-spacing:.04em;}
+  nav a{transition:color .2s ease;}
+  nav a.active{color:var(--accent);}
+
+  @media (prefers-reduced-motion:reduce){
+    .hero-text > *, .avatar{opacity:1; animation:none;}
+    .hero::before, .usp-quote::after{animation:none;}
+    .js .reveal{opacity:1; transform:none; transition:none;}
+  }
 </style>
 </head>
 <body>
 
+<div id="progress" aria-hidden="true"></div>
 <div id="main-view">
 <header class="top">
   <nav>
@@ -183,8 +230,19 @@
 <section id="about">
   <div class="wrap">
     <div class="eyebrow">About</div>
-    <p class="lead" style="margin-top:10px;">Aspiring AI & Machine Learning Engineer with a background in Communications and Electronics Engineering.</p>
-    <p>I combine strong foundations in mathematics, statistics and probability with hands-on experience in Python, data analysis, machine learning, deep learning and natural language processing. I like taking raw, messy data and turning it into models that solve real problems — usually starting with the same instinct I learned in signal processing: find the signal, ignore the noise.</p>
+    <p class="lead" style="margin-top:10px;">I'm Marwan Ahmed Helmy, an AI & Machine Learning Engineer.</p>
+    <p>I help companies and clients turn raw, messy data into clear insights and models that support real decisions.</p>
+    <p>My work covers data analysis, preprocessing and visualization, and machine learning, always focused on results that matter to the business, not just impressive accuracy numbers.</p>
+    <p>I work in Python with Pandas, NumPy and Scikit-learn, with hands-on experience in deep learning and NLP.</p>
+    <p>I'm a self-learner who enjoys teamwork and explaining my work in plain language, so every step is easy to follow.</p>
+    <p>Have a data problem you want solved? Let's talk.</p>
+  </div>
+</section>
+
+<section id="usp" class="usp-section">
+  <div class="wrap">
+    <div class="eyebrow">USP</div>
+    <blockquote class="usp-quote">I turn messy, real-world data into reliable machine learning models, cleaned and validated with the right metrics, so your decisions rest on evidence you can trust, not guesswork.</blockquote>
   </div>
 </section>
 
@@ -284,7 +342,7 @@
         </ul>
         <ul class="lang-list">
           <li><span>Arabic</span><span>Native</span></li>
-          <li><span>English</span><span>Intermediate (B2)</span></li>
+          <li><span>English</span><span>Intermediate (B1)</span></li>
         </ul>
       </div>
     </div>
@@ -419,6 +477,80 @@
       document.getElementById('detail-'+h).style.display='block';
     }
   })();
+</script>
+
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll progress
+  var bar = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(window.scrollY / h, 1) : 0) + ')';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // reveal targets, grouped so siblings stagger
+  var groups = [
+    '#about .eyebrow, #about p', '#usp .eyebrow, #usp .usp-quote',
+    '#skills .eyebrow', '.skills-col', '.skills-col li',
+    '#projects .eyebrow', '.project',
+    '#education .eyebrow', '.edu-item', '.course-list li', '.cert-list li', '.lang-list li',
+    'footer .wrap',
+    '.detail-hero .detail-back, .detail-hero .eyebrow, .detail-hero h1, .detail-hero .meta',
+    '.detail-section', '.pipeline-steps li', '.detail-metrics .m'
+  ];
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var el = e.target; io.unobserve(el);
+      el.classList.add('in');
+      countUp(el);
+      setTimeout(function(){ el.classList.remove('reveal','in'); el.style.transitionDelay=''; }, 1400);
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -6% 0px'});
+  groups.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el, i){
+      if(el.classList.contains('reveal')) return;
+      el.classList.add('reveal');
+      el.style.transitionDelay = Math.min(i % 8, 7) * 70 + 'ms';
+      io.observe(el);
+    });
+  });
+
+  // count-up for result numbers (76%, 590, 6.6%)
+  function countUp(el){
+    if(reduce) return;
+    var nums = el.matches && el.matches('.m') ? el.querySelectorAll('.num') : [];
+    Array.prototype.forEach.call(nums, function(n){
+      var m = n.textContent.trim().match(/^([\d.,]+)(.*)$/);
+      if(!m) return;
+      var target = parseFloat(m[1].replace(/,/g,'')), dec = (m[1].split('.')[1]||'').length, suffix = m[2], t0 = null;
+      function step(ts){
+        if(!t0) t0 = ts;
+        var p = Math.min((ts - t0) / 1200, 1), v = target * (1 - Math.pow(1 - p, 3));
+        n.textContent = v.toFixed(dec) + suffix;
+        if(p < 1) requestAnimationFrame(step); else n.textContent = m[1] + suffix;
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  // active nav link
+  var links = {};
+  document.querySelectorAll('nav ul a').forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+  var so = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      Object.keys(links).forEach(function(k){ links[k].classList.toggle('active', k === e.target.id); });
+    });
+  }, {rootMargin:'-45% 0px -50% 0px'});
+  ['about','skills','projects','education'].forEach(function(id){
+    var s = document.getElementById(id); if(s) so.observe(s);
+  });
+})();
 </script>
 
 </body>
